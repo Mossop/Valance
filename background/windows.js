@@ -36,6 +36,10 @@ class Window {
     this.applyConfig(tabId);
   }
 
+  onTabUpdated(tab, changeInfo) {
+    this.applyConfig(tab.id);
+  }
+
   async onActionClicked() {
     this.config = this.config.next;
 
@@ -65,6 +69,8 @@ class WindowManager extends Listener {
     this.listen(browser.tabs.onCreated, "onTabCreated");
     this.listen(browser.tabs.onAttached, "onTabAttached");
     this.listen(browser.tabs.onReplaced, "onTabReplaced");
+
+    this.listen(browser.tabs.onUpdated, "onTabUpdated");
   }
 
   getWindow(windowId) {
@@ -107,6 +113,10 @@ class WindowManager extends Listener {
   async onTabReplaced(tabId) {
     let window = await this.getWindowForTab(tabId);
     window.onTabReplaced(tabId);
+  }
+
+  onTabUpdated(tabId, changeInfo, tab) {
+    this.getWindow(tab.windowId).onTabUpdated(tab, changeInfo);
   }
 }
 
