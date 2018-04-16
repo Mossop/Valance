@@ -1,7 +1,15 @@
 {
   "manifest_version": 2,
-  "name": "Per Window Proxy",
-  "version": "0.1",
+  "name": "Valance Proxy Manager",
+  "description": "Configure web proxies for individual windows.",
+  "version": "0.8",
+
+  "applications": {
+    "gecko": {
+      "strict_min_version": "61.0a1"
+    }
+  },
+
   "icons": {
     "48": "icons/icon.svg"
   },
