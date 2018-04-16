@@ -138,4 +138,4 @@ class WindowManager extends Listener {
   }
 }
 
-const Windows = new WindowManager();
+var Windows = new WindowManager();

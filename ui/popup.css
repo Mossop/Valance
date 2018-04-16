@@ -1,0 +1,19 @@
+html, body, li {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 10px;
+  list-style: none;
+  font-size: 120%;
+}
+
+li {
+  padding: 5px;
+}
+
+li:hover {
+  background: gray;
+}
