@@ -14,6 +14,10 @@ body {
   font-size: 110%;
 }
 
+input, select, button {
+  font-size: 110%;
+}
+
 #general {
   width: 100%;
   display: flex;
@@ -29,7 +33,7 @@ body {
 
 .proxy {
   margin-top: var(--padding);
-  border: 1px solid darkgray;
+  border: 1px solid lightgray;
   padding: var(--padding);
 }
 
