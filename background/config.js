@@ -66,5 +66,45 @@ var Config = {
         config: this.config,
       }
     });
+  },
+
+  getProxyDataForConfig(config) {
+    let host = config.host;
+    let port = 0;
+    let point = host.indexOf(":");
+    if (point >= 0) {
+      port = parseInt(host.substring(point + 1));
+      host = host.substring(0, point);
+    } else {
+      // Guess at the port number
+      switch (config.type) {
+        case "http":
+          port = 8080;
+          break;
+        case "https":
+          port = 8080;
+          break;
+        case "socks4":
+          port = 1080;
+          break;
+        case "socks":
+          port = 1080;
+          break;
+      }
+    }
+
+    let proxy = {
+      type: config.type,
+      host,
+      port,
+      username: config.username,
+      password: config.password,
+    };
+
+    if (config.type == "socks") {
+      proxy.proxyDNS = config.proxyDNS;
+    }
+
+    return proxy;
   }
 };

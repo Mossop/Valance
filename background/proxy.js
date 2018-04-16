@@ -21,7 +21,7 @@ class ProxyManager extends Listener {
       let config = window.getConfig();
 
       if (config) {
-        return [config.proxy];
+        return [Config.getProxyDataForConfig(config)];
       }
     }
 
