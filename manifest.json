@@ -9,6 +9,7 @@
   "permissions": [
     "proxy",
     "sessions",
+    "storage",
     "<all_urls>"
   ],
 
@@ -25,5 +26,10 @@
   "browser_action": {
     "default_icon": "icons/icon-off.svg",
     "default_title": "Enable Proxy"
+  },
+
+  "options_ui": {
+    "page": "ui/options.html",
+    "browser_style": true
   }
 }

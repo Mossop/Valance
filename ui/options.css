@@ -1,0 +1,68 @@
+:root {
+  --padding: 15px;
+}
+
+html, body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  font-size: 110%;
+}
+
+#general {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+#proxies {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.proxy {
+  margin-top: var(--padding);
+  border: 1px solid darkgray;
+  padding: var(--padding);
+}
+
+.basic {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.proxyname {
+  width: 30em;
+}
+
+.detail {
+  margin-top: var(--padding);
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-column-gap: var(--padding);
+  grid-row-gap: var(--padding);
+  align-items: center;
+}
+
+.detail span {
+  justify-self: end;
+}
+
+.proxydnslabel.disabled {
+  color: gray;
+}
+
+.meta {
+  margin-top: var(--padding);
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="options.css">
+</head>
+<body>
+  <template id="proxytemplate">
+    <div class="proxy">
+      <div class="basic">
+        <input class="proxyname" type="text" placeholder="Name">
+        <select class="proxytype">
+          <option value="http">http proxy</option>
+          <option value="https">https proxy</option>
+          <option value="socks4">Socks 4 proxy</option>
+          <option value="socks">Socks 5 proxy</option>
+        </select>
+      </div>
+      <div class="detail">
+        <input class="proxyhost" type="text" placeholder="www.example.com:8080">
+        <span>Username:</span> 
+        <input class="proxyuser" type="text">
+        <label class="proxydnslabel"><input class="proxydns" type="checkbox"> Use proxy for DNS lookups</label>
+        <span>Password:</span>
+        <input class="proxypass" type="password">
+      </div>
+      <div class="meta">
+        <button class="proxydelete" type="button">Delete</button>
+      </div>
+    </div>
+  </template>
+
+  <div id="general">
+    <button id="addproxy" type="button">Add Proxy</button>
+  </div>
+  <div id="proxies">
+  </div>
+
+  <script type="text/javascript" src="options.js"></script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 class Window {
   constructor(window) {
     this.id = window.id;
-    this.config = Config.getDefault();
+    this.config = null;
 
     for (let tab of window.tabs) {
       this.onTabCreated(tab);
@@ -12,16 +12,39 @@ class Window {
     return this.config;
   }
 
+  async setConfig(config) {
+    this.config = config;
+
+    let window = await browser.windows.get(this.id, { populate: true });
+    for (let tab of window.tabs) {
+      this.applyConfig(tab.id);
+    }
+  }
+
   applyConfig(tabId) {
+    let config = this.config;
+
+    let title = config ? config.name : "Direct connection";
+    let icon = config ? "icon-on.svg" : "icon-off.svg";
+    let popup = "";
+    if (!config && Config.config.length > 1) {
+      popup = browser.runtime.getURL(`ui/popup.html`);
+    }
+
     browser.browserAction.setIcon({
       tabId,
-      path: browser.runtime.getURL(`icons/${this.config.icon}`),
+      path: browser.runtime.getURL(`icons/${icon}`),
     });
 
     browser.browserAction.setTitle({
       tabId,
-      title: this.config.title,
+      title: title,
     });
+
+    browser.browserAction.setPopup({
+      tabId,
+      popup,
+    })
   }
 
   onTabCreated(tab) {
@@ -38,15 +61,6 @@ class Window {
 
   onTabUpdated(tab, changeInfo) {
     this.applyConfig(tab.id);
-  }
-
-  async onActionClicked() {
-    this.config = this.config.next;
-
-    let window = await browser.windows.get(this.id, { populate: true });
-    for (let tab of window.tabs) {
-      this.applyConfig(tab.id);
-    }
   }
 }
 
@@ -71,6 +85,10 @@ class WindowManager extends Listener {
     this.listen(browser.tabs.onReplaced, "onTabReplaced");
 
     this.listen(browser.tabs.onUpdated, "onTabUpdated");
+  }
+
+  getWindows() {
+    return this.windowMap.values();
   }
 
   getWindow(windowId) {
