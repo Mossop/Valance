@@ -1,21 +1,22 @@
 async function init() {
   await Config.init();
+  await Cryptography.init();
   await Windows.init();
   await Proxy.init();
 
   browser.browserAction.onClicked.addListener(async function(tab) {
     let window = await Windows.getWindowForTab(tab.id);
-    let config = window.getConfig();
+    let config = window.getProxyConfig();
 
     // If the window has an active proxy then just disable it.
     if (config) {
-      await window.setConfig(null);
+      await window.getProxyConfig(null);
       return;
     }
 
     // If there is only one configured proxy then switch to it.
     if (Config.config.length == 1) {
-      await window.setConfig(Config.config[0]);
+      await window.getProxyConfig(Config.config[0]);
       return;
     }
 

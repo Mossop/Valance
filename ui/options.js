@@ -1,4 +1,4 @@
-const { Config } = browser.extension.getBackgroundPage();
+const { Config, Cryptography } = browser.extension.getBackgroundPage();
 
 class ConfigUI {
   constructor(config) {
@@ -17,7 +17,7 @@ class ConfigUI {
     this.wireTextbox(".proxyhost", "host");
     this.wireCheckbox(".proxydns", "proxyDNS");
     this.wireTextbox(".proxyuser", "username");
-    this.wireTextbox(".proxypass", "password");
+    this.wirePassword(".proxypass", "password");
 
     this.updateProxyDNS();
 
@@ -53,8 +53,26 @@ class ConfigUI {
     });
   }
 
+  async wireEncrypted(selector, configProp, elementProp, callback) {
+    let element = this.ui.querySelector(selector);
+    element[elementProp] = await Cryptography.decrypt(this.config[configProp].data,
+                                                     this.config[configProp].iv);
+    element.addEventListener("change", async () => {
+      this.config[configProp].data = await Cryptography.encrypt(element[elementProp],
+                                                                this.config[configProp].iv);
+
+      if (callback) {
+        callback(element);
+      }
+    });
+  }
+
   wireTextbox(selector, property, callback = null) {
     this.wire(selector, property, "value", callback);
+  }
+
+  wirePassword(selector, property, callback = null) {
+    this.wireEncrypted(selector, property, "value", callback);
   }
 
   wireSelect(selector, property, callback = null) {
@@ -62,16 +80,16 @@ class ConfigUI {
   }
 
   wireCheckbox(selector, property, callback = null) {
-    this.wire(selector, property, "checked", callback = null);
+    this.wire(selector, property, "checked", callback);
   }
 }
 
-for (let config of Config.config) {
+for (let config of Config.proxies) {
   new ConfigUI(config);
 }
 
-document.getElementById("addproxy").addEventListener("click", () => {
-  new ConfigUI(Config.addConfig());
+document.getElementById("addproxy").addEventListener("click", async () => {
+  new ConfigUI(await Config.addProxyConfig());
 });
 
-addEventListener("unload", () => Config.saveConfigs());
+addEventListener("unload", () => Config.saveConfig());

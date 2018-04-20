@@ -18,10 +18,10 @@ class ProxyManager extends Listener {
       }
     } else {
       let window = await Windows.getWindowForTab(tabId);
-      let config = window.getConfig();
+      let config = window.getProxyConfig();
 
       if (config) {
-        return [Config.getProxyDataForConfig(config)];
+        return [Config.getProxyDataForProxyConfig(config)];
       }
     }
 

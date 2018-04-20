@@ -8,26 +8,26 @@ class Window {
     }
   }
 
-  getConfig() {
+  getProxyConfig() {
     return this.config;
   }
 
-  async setConfig(config) {
+  async setProxyConfig(config) {
     this.config = config;
 
     let window = await browser.windows.get(this.id, { populate: true });
     for (let tab of window.tabs) {
-      this.applyConfig(tab.id);
+      this.applyProxyConfig(tab.id);
     }
   }
 
-  applyConfig(tabId) {
+  applyProxyConfig(tabId) {
     let config = this.config;
 
     let title = config ? config.name : "Direct connection";
     let icon = config ? "icon-on.svg" : "icon-off.svg";
     let popup = "";
-    if (!config && Config.config.length > 1) {
+    if (!config && Config.proxies.length > 1) {
       popup = browser.runtime.getURL(`ui/popup.html`);
     }
 
@@ -48,19 +48,19 @@ class Window {
   }
 
   onTabCreated(tab) {
-    this.applyConfig(tab.id);
+    this.applyProxyConfig(tab.id);
   }
 
   onTabAttached(tabId) {
-    this.applyConfig(tabId);
+    this.applyProxyConfig(tabId);
   }
 
   onTabReplaced(tabId) {
-    this.applyConfig(tabId);
+    this.applyProxyConfig(tabId);
   }
 
   onTabUpdated(tab, changeInfo) {
-    this.applyConfig(tab.id);
+    this.applyProxyConfig(tab.id);
   }
 }
 
