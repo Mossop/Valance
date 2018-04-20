@@ -5,6 +5,7 @@ class ProxyManager extends Listener {
 
   async init() {
     this.listen(browser.proxy.onRequest, "onProxyRequest", { urls: ["<all_urls>"] });
+    this.listen(browser.webRequest.onAuthRequired, "onAuthRequired", { urls: ["<all_urls>"] }, ["blocking"]);
   }
 
   async onProxyRequest(data) {
@@ -26,6 +27,20 @@ class ProxyManager extends Listener {
     }
 
     return [{ type: "direct" }];
+  }
+
+  async onAuthRequired({ tabId, proxyInfo }) {
+    let window = await Windows.getWindowForTab(tabId);
+    let config = window.getConfig();
+
+    if (config) {
+      return {
+        authCredentials: {
+          username: config.username,
+          password: config.password,
+        }
+      };
+    }
   }
 };
 

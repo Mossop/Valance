@@ -97,8 +97,6 @@ var Config = {
       type: config.type,
       host,
       port,
-      username: config.username,
-      password: config.password,
     };
 
     if (config.type == "socks") {
